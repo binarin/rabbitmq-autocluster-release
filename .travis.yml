@@ -1,0 +1,32 @@
+addons:
+  apt:
+    packages:
+    - debhelper
+    - git
+    - rsync
+    - fakeroot
+    - build-essential
+    - python
+    - zip
+
+language: erlang
+
+otp_release:
+  - 17.5
+
+cache:
+  apt: true
+
+script:
+  - git checkout -B "${TRAVIS_TAG:-${TRAVIS_BRANCH}}"
+  - make dist
+
+deploy:
+  provider: releases
+  api_key:
+    secure: WI4Wxrqu1EAY5gU9bT22V5tN8i5pGdbH34KSO5xmHKaN1CDpoKyoWVHNtzhz+2F79zxcDb4hO2INFsahPcu+Y4Hja6TQMeaDO1zH6JVrKZcBER1/FyCKmmjrv9bP3X4icWrd8WRH7Te9ZQ1XFKF8zugiWSheY0dApkiOkqqjHAtN1FYXRrW00oUqBqfgntHotdrX7katFEZ8UCmFGjZlSVwBy9dNLAQkyPD4dLBeB7UlT7HSugmdZShDfSOF3Z2UE+R2QbtDL5RmCl9d7H/b7cGWReaQqqLHfzC071DHPhhchBOxP4BlFD7B9/7STWg/Yfl9bIzsufCC7nGAfTDxzES3NUAqjuNwwv8p2qfRN3dyFhrerTmvx/ZJwkyXTSEgMKQpg/vdlI83iGwZhrWuil4nAb6Xg/QwhOTKB+bIkXXvS7yJ9PxXG4v1jFtKkvx3Et5f306hkVJ+bJjqKs7jPHqfcJVmtG9qlOEra2mabOZ94XRZGI1U/fdZUJd3E2ZLljKCstREtRxxDfmBTwZ/IWy/aHxHVrJKUfgvoMT1siAFi0x92i79GK462/tHNW+rb8/rtngjdXi2d6hK+sJD03E7MRtVd5j057jb85TX3W3gUNqsM4KHsRme4+KVHvnSI8QSYLiWmQZcuz9chkk3E5YpRtcENEjYWuEMKf0eKYc=
+  file_glob: true
+  file:
+    - PACKAGES/deb/*.{deb,dsc,changes,tar.xz}
+  on:
+    tags: true
